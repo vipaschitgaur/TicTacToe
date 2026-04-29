@@ -23,7 +23,8 @@ public class TicTacToe {
         tossAndAssignSymbols();
         displayTossResult();
 
-        int slot = getUserSlot();
+        Scanner scanner = new Scanner(System.in);
+        int slot = getUserSlot(scanner);
         System.out.println("Slot entered: " + slot);
     }
 
@@ -71,8 +72,7 @@ public class TicTacToe {
      * Output: Slot number (1-9)
      * Hint: Validation will be added in later use cases.
      */
-    static int getUserSlot() {
-        Scanner scanner = new Scanner(System.in);
+    static int getUserSlot(Scanner scanner) {
         System.out.print("Enter slot (1-9): ");
         return scanner.nextInt();
     }
