@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 /**
  * TicTacToe
- * UC5 validates whether a move is inside the board boundaries
- * and whether the selected cell is empty.
+ * UC6 places a player's symbol on the board at the given position.
+ * This use case focuses on updating game state.
  */
 public class TicTacToe {
 
@@ -32,7 +32,15 @@ public class TicTacToe {
         System.out.println("Row: " + row);
         System.out.println("Column: " + col);
 
-        System.out.println("Valid move? " + isValidMove(row, col));
+        boolean valid = isValidMove(row, col);
+        System.out.println("Valid move? " + valid);
+
+        if (valid) {
+            char currentSymbol = isHumanTurn ? humanSymbol : computerSymbol;
+            placeMove(row, col, currentSymbol);
+            System.out.println("Board after move:");
+            printBoard();
+        }
     }
 
     static void tossAndAssignSymbols() {
@@ -112,5 +120,15 @@ public class TicTacToe {
             return board[row][col] == '-';
         }
         return false;
+    }
+
+    /**
+     * Updates the board by placing the given symbol at
+     * the specified row and column.
+     * Input: Row, Column, Symbol
+     * Hint: Assume the move is already validated.
+     */
+    static void placeMove(int row, int col, char symbol) {
+        board[row][col] = symbol;
     }
 }
