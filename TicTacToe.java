@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 /**
  * TicTacToe
- * UC4 converts a user-entered slot number (1-9) into corresponding
- * row and column indices of a 2D array.
+ * UC5 validates whether a move is inside the board boundaries
+ * and whether the selected cell is empty.
  */
 public class TicTacToe {
 
@@ -27,8 +27,12 @@ public class TicTacToe {
         int slot = getUserSlot(scanner);
         System.out.println("Slot entered: " + slot);
 
-        System.out.println("Row: " + getRowFromSlot(slot));
-        System.out.println("Column: " + getColFromSlot(slot));
+        int row = getRowFromSlot(slot);
+        int col = getColFromSlot(slot);
+        System.out.println("Row: " + row);
+        System.out.println("Column: " + col);
+
+        System.out.println("Valid move? " + isValidMove(row, col));
     }
 
     static void tossAndAssignSymbols() {
@@ -95,5 +99,18 @@ public class TicTacToe {
      */
     static int getColFromSlot(int slot) {
         return (slot - 1) % 3;
+    }
+
+    /**
+     * Checks if the given row and column are within bounds
+     * and if the target cell is empty.
+     * Input: Row, Column
+     * Output: true if valid, false otherwise.
+     */
+    static boolean isValidMove(int row, int col) {
+        if (row >= 0 && row <= 2 && col >= 0 && col <= 2) {
+            return board[row][col] == '-';
+        }
+        return false;
     }
 }
