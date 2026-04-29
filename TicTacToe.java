@@ -3,50 +3,63 @@ import java.util.Scanner;
 
 /**
  * TicTacToe
- * UC7 allows the computer to make a random valid move
- * by reusing slot conversion and validation logic.
+ * UC8 controls the continuous game loop and alternates
+ * turns until the game ends.
  */
 public class TicTacToe {
 
     static boolean isHumanTurn;
     static char humanSymbol;
     static char computerSymbol;
+    static boolean gameOver = false;
 
     static char[][] board = new char[3][3];
 
     /**
-     * Entry point of the program. Reads slot input and prints it back
-     * to verify correct user input handling.
+     * Entry point of the program. Demonstrates the structure
+     * of a continuous game loop.
      */
     public static void main(String[] args) {
         initializeBoard();
-        printBoard();
         tossAndAssignSymbols();
         displayTossResult();
+        printBoard();
 
         Scanner scanner = new Scanner(System.in);
-        int slot = getUserSlot(scanner);
-        System.out.println("Slot entered: " + slot);
 
-        int row = getRowFromSlot(slot);
-        int col = getColFromSlot(slot);
-        System.out.println("Row: " + row);
-        System.out.println("Column: " + col);
-
-        boolean valid = isValidMove(row, col);
-        System.out.println("Valid move? " + valid);
-
-        if (valid) {
+        while (!gameOver) {
             char currentSymbol = isHumanTurn ? humanSymbol : computerSymbol;
-            placeMove(row, col, currentSymbol);
-            System.out.println("Board after move:");
-            printBoard();
-        }
 
-        System.out.println("\n--- Computer Move Test ---");
-        computerMove();
-        System.out.println("Board after computer move:");
-        printBoard();
+            if (isHumanTurn) {
+                System.out.println("\nYour turn.");
+                int slot, row, col;
+                while (true) {
+                    slot = getUserSlot(scanner);
+                    row = getRowFromSlot(slot);
+                    col = getColFromSlot(slot);
+                    if (isValidMove(row, col)) {
+                        placeMove(row, col, humanSymbol);
+                        break;
+                    }
+                    System.out.println("Invalid move. Try again.");
+                }
+            } else {
+                System.out.println("\nComputer's turn.");
+                computerMove();
+            }
+
+            printBoard();
+
+            if (checkWin(currentSymbol)) {
+                System.out.println(isHumanTurn ? "You win!" : "Computer wins!");
+                gameOver = true;
+            } else if (isBoardFull()) {
+                System.out.println("It's a draw!");
+                gameOver = true;
+            } else {
+                isHumanTurn = !isHumanTurn; // switch turn
+            }
+        }
     }
 
     static void tossAndAssignSymbols() {
@@ -155,5 +168,28 @@ public class TicTacToe {
                 break;
             }
         }
+    }
+
+    static boolean checkWin(char symbol) {
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) ||
+                (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)) {
+                return true;
+            }
+        }
+        if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
+            (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
+            return true;
+        }
+        return false;
+    }
+
+    static boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == '-') return false;
+            }
+        }
+        return true;
     }
 }
