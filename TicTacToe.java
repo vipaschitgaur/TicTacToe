@@ -1,9 +1,10 @@
+import java.util.Random;
 import java.util.Scanner;
 
 /**
  * TicTacToe
- * UC6 places a player's symbol on the board at the given position.
- * This use case focuses on updating game state.
+ * UC7 allows the computer to make a random valid move
+ * by reusing slot conversion and validation logic.
  */
 public class TicTacToe {
 
@@ -41,6 +42,11 @@ public class TicTacToe {
             System.out.println("Board after move:");
             printBoard();
         }
+
+        System.out.println("\n--- Computer Move Test ---");
+        computerMove();
+        System.out.println("Board after computer move:");
+        printBoard();
     }
 
     static void tossAndAssignSymbols() {
@@ -130,5 +136,24 @@ public class TicTacToe {
      */
     static void placeMove(int row, int col, char symbol) {
         board[row][col] = symbol;
+    }
+
+    /**
+     * Generates random slot values until a valid move is found,
+     * then places the computer symbol on the board.
+     */
+    static void computerMove() {
+        Random random = new Random();
+        int slot, row, col;
+        while (true) {
+            slot = random.nextInt(9) + 1; // 1 to 9
+            row = getRowFromSlot(slot);
+            col = getColFromSlot(slot);
+            if (isValidMove(row, col)) {
+                placeMove(row, col, computerSymbol);
+                System.out.println("Computer chose slot: " + slot);
+                break;
+            }
+        }
     }
 }
