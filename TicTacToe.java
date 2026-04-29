@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 /**
  * TicTacToe
- * UC8 controls the continuous game loop and alternates
- * turns until the game ends.
+ * UC9 checks whether a player has won by examining
+ * rows, columns, and diagonals.
  */
 public class TicTacToe {
 
@@ -50,7 +50,7 @@ public class TicTacToe {
 
             printBoard();
 
-            if (checkWin(currentSymbol)) {
+            if (hasWon(currentSymbol)) {
                 System.out.println(isHumanTurn ? "You win!" : "Computer wins!");
                 gameOver = true;
             } else if (isBoardFull()) {
@@ -170,7 +170,12 @@ public class TicTacToe {
         }
     }
 
-    static boolean checkWin(char symbol) {
+    /**
+     * Checks all possible winning patterns for the given symbol.
+     * Input: Player symbol
+     * Output: true if win detected.
+     */
+    static boolean hasWon(char symbol) {
         for (int i = 0; i < 3; i++) {
             if ((board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) ||
                 (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)) {
